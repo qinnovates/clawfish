@@ -1,0 +1,38 @@
+# Governance Council Configuration
+# =================================
+# Meta-oversight: checks that the research process itself is sound
+
+role: Process integrity auditor
+trigger_conditions:
+  - after_every_full_research_cycle
+  - close_vote_margin: 0.7  # < 70% agreement triggers review
+  - persona_flags_process_concern: true
+
+checks:
+  mece_compliance:
+    description: "Verify research partitions were mutually exclusive, collectively exhaustive"
+    severity: critical
+
+  conflict_of_interest:
+    description: "Flag if any researcher has known affiliation with a discovered resource"
+    severity: high
+
+  completeness:
+    description: "Check for systematic gaps (missing subcategories, underrepresented regions)"
+    severity: medium
+
+  workload_balance:
+    description: "Verify no researcher was overloaded or underutilized"
+    severity: low
+
+  dedup_accuracy:
+    description: "Spot-check deduplication — were any resources incorrectly merged or split?"
+    severity: medium
+
+report_schema:
+  round_id: string
+  timestamp: datetime
+  checks_passed: integer
+  checks_failed: integer
+  findings: array
+  recommendation: enum[APPROVED, NEEDS_REVISION, BLOCKED]

@@ -1,0 +1,61 @@
+# Myelin8 Configuration for ClawFish
+# ====================================
+# How ClawFish uses Myelin8 as its memory backbone
+
+store_path: ~/.clawfish/myelin8/
+
+# Tier policies — when resources transition between storage tiers
+tiers:
+  hot:
+    description: "Newly discovered or recently evaluated resources"
+    max_age_days: 7
+    format: json
+    compression: none
+  warm:
+    description: "Evaluated resources, actively searchable"
+    max_age_days: 30
+    format: parquet
+    compression: zstd-3
+  cold:
+    description: "Archived resources, searchable via index"
+    max_age_days: 90
+    format: parquet
+    compression: zstd-9
+  frozen:
+    description: "Historical snapshots for trend analysis"
+    format: parquet
+    compression: zstd-19
+
+# Significance scoring — maps judicial score to Myelin8 significance
+significance:
+  # judicial_score (0-100) → myelin8 significance (0.0-1.0)
+  mapping: linear  # significance = judicial_score / 100
+  # High significance resists tier decay
+  decay_resistance_threshold: 0.75
+  # Access boosts significance (Hebbian reinforcement)
+  access_boost: 0.05
+
+# Search configuration
+search:
+  # Keywords extracted per resource for tantivy index
+  keywords_per_resource: 30
+  # Semantic embedding model
+  embedding_model: all-MiniLM-L6-v2
+  # Reciprocal Rank Fusion k parameter
+  rrf_k: 60
+  # Include composite score as third fusion signal
+  use_composite_signal: true
+
+# Artifact schema — what gets stored per resource
+artifact_fields:
+  - name
+  - url
+  - type
+  - category
+  - tags
+  - description
+  - signals        # github_stars, freshness, citations
+  - quorum_eval    # census_used, persona_scores, composite
+  - metadata       # languages, markets, platforms, pricing
+  - significance   # computed from judicial_score
+  - citations      # array of citation IDs

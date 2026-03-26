@@ -1,0 +1,205 @@
+# Design Studio Variable Map for ClawFish
+# =========================================
+#
+# Design Studio is a MODULE — it doesn't own ClawFish data.
+# It READS from ClawFish's files via these variable bindings.
+#
+# Each variable maps a Design Studio UI concept to a ClawFish
+# file path + JSON path. Design Studio resolves these at runtime.
+#
+# Syntax:
+#   source: file path (relative to ClawFish project root)
+#   path:   JSONPath or YAML path to the specific data
+#   watch:  true = hot-reload when file changes (fs.watch)
+#   write:  true = UI can write back to this file
+
+# ─────────────────────────────────────────────
+# RESOURCE BROWSER — main content view
+# ─────────────────────────────────────────────
+resource_browser:
+  # List of all resources
+  items:
+    source: data/resources.json
+    path: $.resources[*]
+    watch: true
+    write: false  # resources are added via pipeline, not UI
+  # Category taxonomy
+  categories:
+    source: data/resources.json
+    path: $.metadata.categories[*]
+    watch: true
+    write: false
+
+# ─────────────────────────────────────────────
+# VOTING PANEL — persona votes displayed 1-by-1
+# ─────────────────────────────────────────────
+voting:
+  # Persona definitions (who votes)
+  personas:
+    source: quorum/personas.yaml
+    path: $.personas[*]
+    watch: false
+    write: false
+  # Census populations (which group votes)
+  populations:
+    source: quorum/census-populations.yaml
+    path: $.populations
+    watch: false
+    write: false
+  # Vote records (read + write)
+  records:
+    source: quorum/votes/${round_id}.json
+    path: $.votes[*]
+    watch: true
+    write: true  # UI submits votes here
+  # Judicial scores (computed from votes)
+  scores:
+    source: data/judicial-scores.json
+    path: $.scores[*]
+    watch: true
+    write: false  # computed by pipeline, not UI
+
+# ─────────────────────────────────────────────
+# CITATION TRACKER — validation status
+# ─────────────────────────────────────────────
+citations:
+  index:
+    source: data/citations.json
+    path: $.citations[*]
+    watch: true
+    write: true  # validators can update status via UI
+  metadata:
+    source: data/citations.json
+    path: $.metadata
+    watch: true
+    write: false
+
+# ─────────────────────────────────────────────
+# SENTIMENT SLIDER
+# ─────────────────────────────────────────────
+sentiment:
+  current:
+    source: clawfish.config.yaml
+    path: $.ui.sentiment_default
+    watch: true
+    write: true  # user can adjust via slider
+  range:
+    source: clawfish.config.yaml
+    path: $.ui.sentiment_range
+    watch: false
+    write: false
+
+# ─────────────────────────────────────────────
+# SCORE DASHBOARD — tiers, trends, velocity
+# ─────────────────────────────────────────────
+dashboard:
+  scores:
+    source: data/judicial-scores.json
+    path: $.scores[*]
+    watch: true
+    write: false
+  tier_config:
+    source: clawfish.config.yaml
+    path: $.ui.tiers
+    watch: false
+    write: false
+  changelog:
+    source: data/changelog.json
+    path: $.entries[*]
+    watch: true
+    write: false
+
+# ─────────────────────────────────────────────
+# COUNCIL REPORTS — governance, neuromodest, ethics
+# ─────────────────────────────────────────────
+councils:
+  governance:
+    reports:
+      source: councils/governance/${report_id}.json
+      path: $
+      watch: true
+      write: false
+  neuromodest:
+    reports:
+      source: councils/neuromodest/${report_id}.json
+      path: $
+      watch: true
+      write: false
+  ethics:
+    reports:
+      source: councils/ethics/${report_id}.json
+      path: $
+      watch: true
+      write: false
+
+# ─────────────────────────────────────────────
+# CRAWL STATE — pipeline progress tracking
+# ─────────────────────────────────────────────
+pipeline:
+  crawl_state:
+    source: data/crawl-state.json
+    path: $
+    watch: true
+    write: false
+  # Research delegation partitions (who's crawling what)
+  partitions:
+    source: quorum/research-protocol.md
+    path: null  # markdown, parsed by UI
+    watch: false
+    write: false
+
+# ─────────────────────────────────────────────
+# MINDMAP / BRAINSTORM — auto-mapped connections
+# ─────────────────────────────────────────────
+mindmap:
+  # Node data comes from resources + their tags/connections
+  nodes:
+    source: data/resources.json
+    path: $.resources[*]
+    watch: true
+    write: false
+  # Edge data (connections between resources)
+  edges:
+    source: data/resource-graph.json
+    path: $.edges[*]
+    watch: true
+    write: true  # brainstorm mode can add new edges
+  # Auto-generated topic clusters
+  clusters:
+    source: data/resource-graph.json
+    path: $.clusters[*]
+    watch: true
+    write: false  # computed by pipeline
+
+# ─────────────────────────────────────────────
+# NOTES / COMMENTS — per-resource annotations
+# ─────────────────────────────────────────────
+notes:
+  # Notes are stored per-resource in a flat file
+  index:
+    source: data/notes.json
+    path: $.notes[*]
+    watch: true
+    write: true  # users add notes via UI
+  # Comments on evaluation rounds
+  comments:
+    source: data/comments.json
+    path: $.comments[*]
+    watch: true
+    write: true
+
+# ─────────────────────────────────────────────
+# THEME — visual styling from repo-design-kit
+# ─────────────────────────────────────────────
+theme:
+  active:
+    source: clawfish.config.yaml
+    path: $.ui.theme
+    watch: true
+    write: true
+  # Theme definitions from repo-design-kit
+  definitions:
+    source: config/themes/
+    path: null  # directory of JSON files
+    watch: false
+    write: false

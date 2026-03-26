@@ -1,0 +1,125 @@
+# ClawFish Configuration
+# =====================
+# Single source of truth. Design Studio and all consumers
+# read from this file to discover ClawFish's data layout.
+#
+# Variables use ${} syntax. Consumers resolve paths relative
+# to this config file's location (PROJECT_ROOT).
+
+project:
+  name: ClawFish
+  version: 0.1.0
+  description: "The SEO Resource Library"
+  repo: qinnovates/clawfish
+  root: .  # PROJECT_ROOT — all paths relative to this
+
+# ─────────────────────────────────────────────
+# DATA LAYER — where structured data lives
+# ─────────────────────────────────────────────
+data:
+  # Resource database (machine-readable)
+  resources: ${root}/data/resources.json
+  # Citation index — every factual claim, validated 3x minimum
+  citations: ${root}/data/citations.json
+  # Judicial scores — voting results, composite scores, tiers
+  scores: ${root}/data/judicial-scores.json
+  # Crawl state — what's been discovered, when, by whom
+  crawl_state: ${root}/data/crawl-state.json
+  # Resource changelog — what changed between evaluation rounds
+  changelog: ${root}/data/changelog.json
+
+# ─────────────────────────────────────────────
+# QUORUM LAYER — personas, populations, protocols
+# ─────────────────────────────────────────────
+quorum:
+  # Persona definitions (static census)
+  personas: ${root}/quorum/personas.yaml
+  # Named evaluation panels
+  populations: ${root}/quorum/census-populations.yaml
+  # Research delegation + editorial consensus protocol
+  research_protocol: ${root}/quorum/research-protocol.md
+  # Voting system + judicial scoring
+  judicial_system: ${root}/quorum/judicial-system.md
+  # Quorum system documentation
+  readme: ${root}/quorum/README.md
+  # Vote records per evaluation round
+  votes: ${root}/quorum/votes/
+  # Evaluation reports (one per resource per round)
+  evaluations: ${root}/quorum/evaluations/
+
+# ─────────────────────────────────────────────
+# COUNCILS — external oversight bodies
+# ─────────────────────────────────────────────
+councils:
+  governance:
+    config: ${root}/councils/governance.yaml
+    reports: ${root}/councils/governance/
+  neuromodest:
+    config: ${root}/councils/neuromodest.yaml
+    reports: ${root}/councils/neuromodest/
+  ethics:
+    config: ${root}/councils/ethics.yaml
+    reports: ${root}/councils/ethics/
+
+# ─────────────────────────────────────────────
+# CONTENT LAYER — human-readable output
+# ─────────────────────────────────────────────
+content:
+  readme: ${root}/README.md
+  contributing: ${root}/CONTRIBUTING.md
+  license: ${root}/LICENSE
+  # Category deep-dives (generated from data/resources.json)
+  categories: ${root}/categories/
+  # Documentation
+  docs: ${root}/docs/
+
+# ─────────────────────────────────────────────
+# PIPELINE LAYER — CLI + automation scripts
+# ─────────────────────────────────────────────
+pipeline:
+  # CLI entry point
+  cli: ${root}/src/cli.py
+  # Crawl/discover new resources
+  crawl: ${root}/src/crawl/
+  # Evaluate resources via Quorum
+  evaluate: ${root}/src/evaluate/
+  # Ingest into Myelin8
+  ingest: ${root}/src/ingest/
+  # Generate static output (README, categories) from data
+  generate: ${root}/src/generate/
+  # Scheduled jobs
+  schedules: ${root}/src/schedules/
+
+# ─────────────────────────────────────────────
+# INTEGRATION LAYER — connections to external systems
+# ─────────────────────────────────────────────
+integrations:
+  myelin8:
+    # Myelin8 store directory (tiered storage)
+    store: ~/.clawfish/myelin8/
+    # Config for tiered compression, search, significance
+    config: ${root}/config/myelin8.yaml
+  keymaker:
+    # API keys for crawlers, managed by Keymaker Vault
+    # Actual secrets in Keymaker, this is just the manifest
+    manifest: ${root}/config/keymaker-manifest.yaml
+  design_studio:
+    # Variable map — how Design Studio reads ClawFish data
+    variable_map: ${root}/config/design-studio-vars.yaml
+
+# ─────────────────────────────────────────────
+# UI SETTINGS — consumed by Design Studio module
+# ─────────────────────────────────────────────
+ui:
+  # Sentiment slider default
+  sentiment_default: -2
+  sentiment_range: [-5, 5]
+  # Score tiers and display
+  tiers:
+    platinum: { min: 90, badge: "⭐⭐⭐", color: "#E5E4E2" }
+    gold: { min: 75, badge: "⭐⭐", color: "#FFD700" }
+    silver: { min: 60, badge: "⭐", color: "#C0C0C0" }
+    bronze: { min: 40, badge: "—", color: "#CD7F32" }
+    review: { min: 0, badge: "⚠️", color: "#FF453A" }
+  # Theme (from repo-design-kit)
+  theme: cyan-blue

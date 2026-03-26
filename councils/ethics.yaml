@@ -1,0 +1,46 @@
+# Ethics Council Configuration
+# ============================
+# Integrity and fairness enforcement
+
+role: Fairness, transparency, and harm prevention
+
+checks:
+  undisclosed_affiliations:
+    description: "Is any contributor affiliated with a listed tool?"
+    severity: critical
+
+  pay_to_play:
+    description: "Are sponsored tools mixed with organic discoveries?"
+    severity: critical
+
+  diversity_audit:
+    description: "Geographic, language, price-point diversity in recommendations"
+    dimensions:
+      - geographic_coverage
+      - language_coverage
+      - price_range_distribution  # free / freemium / paid / enterprise
+      - platform_coverage         # windows / mac / linux / web
+    severity: medium
+
+  harm_assessment:
+    description: "Could any listed tool be used for black-hat SEO or spam?"
+    flag_categories:
+      - link_manipulation
+      - content_spinning
+      - cloaking_tools
+      - negative_seo
+    severity: high
+
+  privacy_review:
+    description: "Do listed tools respect user privacy? GDPR noted?"
+    severity: medium
+
+report_schema:
+  round_id: string
+  timestamp: datetime
+  affiliations_found: array
+  sponsored_detected: boolean
+  diversity_scores: object
+  harm_flags: array
+  privacy_concerns: array
+  recommendation: enum[CLEAN, NEEDS_REVISION, BLOCKED]

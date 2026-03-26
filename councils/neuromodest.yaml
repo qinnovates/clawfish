@@ -1,0 +1,48 @@
+# Neuromodest Council Configuration
+# ===================================
+# Humility enforcement: keeps ClawFish honest about what it knows
+
+role: Overclaiming prevention and scope honesty
+
+checks:
+  superlative_audit:
+    description: "Scan descriptions for unsupported superlatives (best, fastest, #1, most comprehensive)"
+    patterns:
+      - "best"
+      - "fastest"
+      - "most comprehensive"
+      - "#1"
+      - "leading"
+      - "top-rated"
+      - "industry-leading"
+      - "unmatched"
+    action: flag_for_rewrite
+    severity: medium
+
+  uncertainty_acknowledgment:
+    description: "Are limitations mentioned? Caveats noted?"
+    severity: low
+
+  scope_honesty:
+    description: "Does ClawFish claim to be exhaustive? It shouldn't."
+    known_gaps_must_be_documented: true
+    severity: high
+
+  recency_humility:
+    description: "Flag resources not re-evaluated in 90+ days"
+    stale_threshold_days: 90
+    severity: medium
+
+  marketing_language_detection:
+    description: "Flag descriptions that read like vendor marketing copy"
+    severity: medium
+
+report_schema:
+  round_id: string
+  timestamp: datetime
+  superlatives_found: integer
+  superlatives_resolved: integer
+  remaining_overclaims: array
+  gaps_acknowledged: array
+  recency_warnings: array
+  recommendation: enum[CLEAN, NEEDS_REVISION]

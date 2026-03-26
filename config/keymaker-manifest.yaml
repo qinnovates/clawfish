@@ -1,0 +1,51 @@
+# Keymaker Vault Manifest for ClawFish
+# =====================================
+# Declares which secrets ClawFish agents need.
+# Actual secrets stored in Keymaker Vault, NOT here.
+
+secrets:
+  github_token:
+    description: "GitHub API token for repo metadata (stars, commits, issues)"
+    used_by:
+      - crawl.github_crawler
+      - evaluate.repo_analyzer
+    scope: read-only
+    rotation: 90d
+
+  serpapi_key:
+    description: "SerpApi key for SERP data collection"
+    used_by:
+      - crawl.serp_researcher
+    scope: search-only
+    rotation: 180d
+
+  google_search_console:
+    description: "Google Search Console API credentials"
+    used_by:
+      - crawl.gsc_analyzer
+    scope: read-only
+    rotation: 365d
+
+  dataforseo_key:
+    description: "DataForSEO API key for keyword and backlink data"
+    used_by:
+      - crawl.keyword_researcher
+      - evaluate.backlink_analyzer
+    scope: read-only
+    rotation: 90d
+
+# Agent access policy (maps to Keymaker Phase 2 TOML policies)
+access_policy:
+  # Each crawler agent only gets the secrets it needs
+  crawl.github_crawler:
+    allow: [github_token]
+  crawl.serp_researcher:
+    allow: [serpapi_key]
+  crawl.gsc_analyzer:
+    allow: [google_search_console]
+  crawl.keyword_researcher:
+    allow: [dataforseo_key]
+  evaluate.repo_analyzer:
+    allow: [github_token]
+  evaluate.backlink_analyzer:
+    allow: [dataforseo_key]
