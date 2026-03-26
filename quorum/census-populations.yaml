@@ -1,0 +1,103 @@
+# Quorum Census Populations
+# ==========================
+#
+# Census populations are named groupings of personas assembled for specific
+# evaluation contexts. Just as census data represents populations, persona sets
+# represent stakeholder populations relevant to a domain.
+#
+# DUAL PURPOSE:
+#   - STATIC: These predefined populations provide deterministic, reproducible
+#     evaluation panels for benchmarks, comparisons, and audits.
+#   - DYNAMIC: AI auto-selects the best-fit population for any given query,
+#     but users can manually override in the UI (to be created).
+
+populations:
+
+  technical-audit:
+    description: >
+      Infrastructure-focused panel for evaluating technical SEO tools,
+      crawl systems, and performance optimization resources.
+    personas:
+      - technical-seo-architect
+      - seo-data-analyst
+      - seo-tool-developer
+    when_to_use: >
+      Use when evaluating technical SEO tools, site auditing platforms,
+      crawl infrastructure, server configuration guides, or Core Web Vitals
+      optimization resources. Best for assessments where code quality,
+      data accuracy, and technical correctness are primary concerns.
+
+  content-review:
+    description: >
+      Content and authority panel for evaluating editorial resources,
+      link building tools, and content strategy frameworks.
+    personas:
+      - content-strategist
+      - link-building-specialist
+      - agency-seo-director
+    when_to_use: >
+      Use when evaluating content strategy guides, link building tools,
+      outreach platforms, editorial calendars, or E-E-A-T frameworks.
+      Best for assessments where content quality, authority building,
+      and business ROI are primary concerns.
+
+  commerce-local:
+    description: >
+      Commerce-oriented panel for evaluating e-commerce platforms,
+      local search tools, and purchase-intent optimization resources.
+    personas:
+      - local-seo-expert
+      - ecommerce-seo-specialist
+    when_to_use: >
+      Use when evaluating product feed tools, Google Business Profile
+      managers, local citation platforms, faceted navigation solutions,
+      or marketplace SEO resources. Best for assessments tied to
+      transactional intent and physical/digital commerce.
+
+  full-spectrum:
+    description: >
+      Comprehensive panel with all 10 personas for thorough,
+      multi-perspective evaluation across every SEO discipline.
+    personas:
+      - technical-seo-architect
+      - content-strategist
+      - link-building-specialist
+      - local-seo-expert
+      - ecommerce-seo-specialist
+      - seo-data-analyst
+      - international-seo-strategist
+      - seo-tool-developer
+      - agency-seo-director
+      - search-engine-researcher
+    when_to_use: >
+      Use for comprehensive evaluations where no single discipline dominates,
+      or when you need the broadest possible stakeholder representation.
+      Ideal for evaluating general-purpose SEO platforms, industry reports,
+      or resources that span multiple disciplines.
+
+  research-development:
+    description: >
+      R&D panel for evaluating academic research, experimental tools,
+      and novel SEO methodologies.
+    personas:
+      - seo-tool-developer
+      - search-engine-researcher
+    when_to_use: >
+      Use when evaluating academic papers, algorithm research, experimental
+      SEO tools, open-source projects, or novel methodologies. Best for
+      assessments where theoretical rigor, code quality, and research
+      soundness are primary concerns.
+
+  strategy-planning:
+    description: >
+      Strategy panel for evaluating business planning resources,
+      international expansion, and cross-market SEO frameworks.
+    personas:
+      - content-strategist
+      - agency-seo-director
+      - international-seo-strategist
+    when_to_use: >
+      Use when evaluating SEO strategy frameworks, international expansion
+      plans, business case templates, or cross-channel integration guides.
+      Best for assessments where strategic vision, market coverage, and
+      business alignment are primary concerns.

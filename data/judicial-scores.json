@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "scoring_formula": "approval_ratio*0.4 + avg_quality/10*0.4 + freshness*0.2",
+    "total_resources_scored": 0,
+    "last_round": null,
+    "sentiment_setting": -2
+  },
+  "scores": []
+}

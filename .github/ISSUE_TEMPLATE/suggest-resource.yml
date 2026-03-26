@@ -1,0 +1,85 @@
+name: Suggest a Resource
+description: Suggest an SEO resource for inclusion in ClawFish
+title: "[Resource] "
+labels: ["suggestion"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Resource Name
+      placeholder: e.g., Screaming Frog SEO Spider
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      placeholder: https://...
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - SEO Tools & Frameworks
+        - Crawlers & Scrapers
+        - Analytics & Monitoring
+        - Keyword Research
+        - Link Building & Analysis
+        - Performance & Core Web Vitals
+        - Content Optimization
+        - Technical SEO
+        - Mobile SEO
+        - International SEO
+        - Local SEO
+        - E-commerce SEO
+        - Schema & Structured Data
+        - Sitemaps & Robots
+        - AI-Powered SEO Tools
+        - Learning Resources
+        - Courses & Certifications
+        - Blogs & Newsletters
+        - Podcasts
+        - Books
+        - Communities
+        - APIs & Datasets
+        - Browser Extensions
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Resource Type
+      options:
+        - repo
+        - tool
+        - article
+        - course
+        - community
+        - api
+        - dataset
+        - extension
+        - book
+        - podcast
+        - newsletter
+        - blog
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Brief description of the resource (1-2 sentences)
+    validations:
+      required: true
+  - type: textarea
+    id: citations
+    attributes:
+      label: Supporting Citations
+      description: Links that support the resource's quality/relevance (minimum 1)
+      placeholder: |
+        - https://example.com/review-of-tool
+        - https://example.com/comparison
+    validations:
+      required: true
