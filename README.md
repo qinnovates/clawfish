@@ -622,6 +622,24 @@ Every resource in ClawFish is evaluated using [Quorum](https://github.com/qinnov
 
 ---
 
+## Star History
+
+<p align="center">
+  <img src="docs/assets/clawfish-mascot.svg" width="120" alt="ClawFish Mascot">
+</p>
+
+<p align="center">
+  <a href="https://star-history.com/#qinnovates/clawfish&Date">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=qinnovates/clawfish&type=Date&theme=dark">
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=qinnovates/clawfish&type=Date">
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=qinnovates/clawfish&type=Date" width="600">
+    </picture>
+  </a>
+</p>
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to submit resources.

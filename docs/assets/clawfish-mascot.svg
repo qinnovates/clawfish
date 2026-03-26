@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="160" viewBox="0 0 200 160">
+  <!-- ClawFish Mascot: Lobster-Fish Hybrid -->
+
+  <!-- Body (fish shape) -->
+  <ellipse cx="100" cy="85" rx="50" ry="30" fill="#0096C7" stroke="#023E8A" stroke-width="2"/>
+
+  <!-- Tail (fish tail) -->
+  <polygon points="150,85 180,65 180,105" fill="#00B4D8" stroke="#023E8A" stroke-width="2"/>
+
+  <!-- Lobster claws -->
+  <g transform="translate(50, 65)">
+    <!-- Left claw -->
+    <ellipse cx="-15" cy="-10" rx="18" ry="10" fill="#FF453A" stroke="#D70015" stroke-width="2" transform="rotate(-30)"/>
+    <ellipse cx="-25" cy="-18" rx="12" ry="7" fill="#FF453A" stroke="#D70015" stroke-width="2" transform="rotate(-50)"/>
+    <ellipse cx="-8" cy="-22" rx="12" ry="7" fill="#FF6B6B" stroke="#D70015" stroke-width="2" transform="rotate(-10)"/>
+  </g>
+
+  <!-- Lobster antennae -->
+  <line x1="60" y1="65" x2="35" y2="35" stroke="#FF453A" stroke-width="2" stroke-linecap="round"/>
+  <line x1="65" y1="62" x2="45" y2="30" stroke="#FF453A" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="35" cy="35" r="3" fill="#FF6B6B"/>
+  <circle cx="45" cy="30" r="3" fill="#FF6B6B"/>
+
+  <!-- Eye -->
+  <circle cx="75" cy="78" r="8" fill="white" stroke="#023E8A" stroke-width="1.5"/>
+  <circle cx="73" cy="77" r="4" fill="#023E8A"/>
+  <circle cx="72" cy="76" r="1.5" fill="white"/>
+
+  <!-- Dorsal fin -->
+  <polygon points="90,55 100,35 115,55" fill="#00B4D8" stroke="#023E8A" stroke-width="2"/>
+
+  <!-- Mouth (smirk) -->
+  <path d="M 62 90 Q 68 96 75 92" fill="none" stroke="#023E8A" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Bottom fin -->
+  <polygon points="95,115 105,130 115,115" fill="#00B4D8" stroke="#023E8A" stroke-width="1.5"/>
+
+  <!-- Scales pattern -->
+  <circle cx="90" cy="80" r="3" fill="none" stroke="#023E8A" stroke-width="0.5" opacity="0.3"/>
+  <circle cx="100" cy="85" r="3" fill="none" stroke="#023E8A" stroke-width="0.5" opacity="0.3"/>
+  <circle cx="110" cy="80" r="3" fill="none" stroke="#023E8A" stroke-width="0.5" opacity="0.3"/>
+  <circle cx="120" cy="85" r="3" fill="none" stroke="#023E8A" stroke-width="0.5" opacity="0.3"/>
+  <circle cx="105" cy="92" r="3" fill="none" stroke="#023E8A" stroke-width="0.5" opacity="0.3"/>
+  <circle cx="115" cy="90" r="3" fill="none" stroke="#023E8A" stroke-width="0.5" opacity="0.3"/>
+  <circle cx="95" cy="90" r="3" fill="none" stroke="#023E8A" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Lobster shell lines on body -->
+  <path d="M 85 70 Q 90 85 85 100" fill="none" stroke="#023E8A" stroke-width="0.8" opacity="0.4"/>
+
+  <!-- Text -->
+  <text x="100" y="152" font-family="monospace" font-size="11" fill="#0096C7" text-anchor="middle" font-weight="bold">CLAWFISH</text>
+</svg>
