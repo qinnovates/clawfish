@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawFish — Project Board</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0f0f14;
+    color: #e0e0e8;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    text-align: center;
+    padding: 32px 20px 20px;
+    border-bottom: 1px solid #1a1a2e;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    letter-spacing: 0.25em;
+    color: #0096C7;
+    font-weight: 700;
+  }
+
+  header p {
+    font-size: 0.7rem;
+    color: #555570;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 24px 20px;
+    flex: 1;
+    min-height: 0;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .column {
+    background: #13131e;
+    border-radius: 10px;
+    border: 1px solid #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    overflow: hidden;
+  }
+
+  .column-header {
+    padding: 14px 16px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #555570;
+    border-bottom: 1px solid #1a1a2e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .column-header .count {
+    background: #1a1a2e;
+    color: #555570;
+    font-size: 0.6rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .column-body {
+    padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+    transition: background 0.2s;
+  }
+
+  .column-body.drag-over {
+    background: rgba(0, 150, 199, 0.04);
+    border-radius: 0 0 10px 10px;
+  }
+
+  .card {
+    background: #19192a;
+    border: 1px solid #222240;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 8px;
+    cursor: grab;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+
+  .card:hover {
+    border-color: #0096C7;
+    box-shadow: 0 0 12px rgba(0, 150, 199, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .card:active {
+    cursor: grabbing;
+  }
+
+  .card.dragging {
+    opacity: 0.4;
+    transform: scale(0.96);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #e0e0e8;
+    flex: 1;
+    line-height: 1.3;
+  }
+
+  .badge-priority {
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .badge-priority.p0 {
+    background: rgba(255, 59, 48, 0.15);
+    color: #ff3b30;
+    border: 1px solid rgba(255, 59, 48, 0.3);
+  }
+
+  .badge-priority.p1 {
+    background: rgba(255, 159, 10, 0.12);
+    color: #ff9f0a;
+    border: 1px solid rgba(255, 159, 10, 0.25);
+  }
+
+  .badge-priority.p2 {
+    background: rgba(0, 180, 216, 0.1);
+    color: #00B4D8;
+    border: 1px solid rgba(0, 180, 216, 0.2);
+  }
+
+  .card-desc {
+    font-size: 0.68rem;
+    color: #666680;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .card-tag {
+    display: inline-block;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(2, 62, 138, 0.25);
+    color: #4da3d4;
+    border: 1px solid rgba(2, 62, 138, 0.4);
+  }
+
+  /* Column accent lines */
+  .column[data-col="backlog"] .column-header { border-top: 2px solid #555570; }
+  .column[data-col="in-progress"] .column-header { border-top: 2px solid #0096C7; }
+  .column[data-col="review"] .column-header { border-top: 2px solid #ff9f0a; }
+  .column[data-col="done"] .column-header { border-top: 2px solid #30d158; }
+
+  .ghost-card {
+    border: 2px dashed #0096C7;
+    border-radius: 8px;
+    height: 60px;
+    margin-bottom: 8px;
+    background: rgba(0, 150, 199, 0.04);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 30px 10px;
+    color: #333350;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* scrollbar */
+  .column-body::-webkit-scrollbar { width: 4px; }
+  .column-body::-webkit-scrollbar-track { background: transparent; }
+  .column-body::-webkit-scrollbar-thumb { background: #222240; border-radius: 4px; }
+
+  @media (max-width: 900px) {
+    .board {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .board {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CLAWFISH &mdash; PROJECT BOARD</h1>
+  <p>drag cards to update status</p>
+</header>
+
+<div class="board" id="board"></div>
+
+<script>
+(function () {
+  let boardData = null;
+  let draggedCard = null;
+  let draggedEl = null;
+
+  async function loadBoard() {
+    try {
+      const res = await fetch('board.json');
+      boardData = await res.json();
+      render();
+    } catch (e) {
+      document.getElementById('board').innerHTML =
+        '<div style="grid-column:1/-1;text-align:center;color:#555570;padding:60px;">Failed to load board.json</div>';
+    }
+  }
+
+  function render() {
+    const board = document.getElementById('board');
+    board.innerHTML = '';
+
+    boardData.columns.forEach(col => {
+      const colEl = document.createElement('div');
+      colEl.className = 'column';
+      colEl.dataset.col = col.id;
+
+      const header = document.createElement('div');
+      header.className = 'column-header';
+      header.innerHTML = `<span>${col.title}</span><span class="count">${col.cards.length}</span>`;
+
+      const body = document.createElement('div');
+      body.className = 'column-body';
+      body.dataset.colId = col.id;
+
+      if (col.cards.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.textContent = 'No cards';
+        body.appendChild(empty);
+      }
+
+      col.cards.forEach(card => {
+        body.appendChild(createCardEl(card));
+      });
+
+      // Drop zone events
+      body.addEventListener('dragover', onDragOver);
+      body.addEventListener('dragenter', onDragEnter);
+      body.addEventListener('dragleave', onDragLeave);
+      body.addEventListener('drop', onDrop);
+
+      colEl.appendChild(header);
+      colEl.appendChild(body);
+      board.appendChild(colEl);
+    });
+  }
+
+  function createCardEl(card) {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.draggable = true;
+    el.dataset.cardId = card.id;
+
+    const prioClass = card.priority.toLowerCase();
+
+    el.innerHTML = `
+      <div class="card-top">
+        <span class="card-title">${esc(card.title)}</span>
+        <span class="badge-priority ${prioClass}">${card.priority}</span>
+      </div>
+      <div class="card-desc">${esc(card.description)}</div>
+      <span class="card-tag">${esc(card.project)}</span>
+    `;
+
+    el.addEventListener('dragstart', onDragStart);
+    el.addEventListener('dragend', onDragEnd);
+
+    return el;
+  }
+
+  function onDragStart(e) {
+    draggedEl = e.target.closest('.card');
+    draggedCard = draggedEl.dataset.cardId;
+    draggedEl.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', draggedCard);
+  }
+
+  function onDragEnd() {
+    if (draggedEl) draggedEl.classList.remove('dragging');
+    draggedEl = null;
+    draggedCard = null;
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    document.querySelectorAll('.ghost-card').forEach(el => el.remove());
+  }
+
+  function onDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    const body = e.currentTarget;
+    const ghost = body.querySelector('.ghost-card');
+    const afterEl = getDragAfterElement(body, e.clientY);
+
+    if (!ghost) {
+      const g = document.createElement('div');
+      g.className = 'ghost-card';
+      if (afterEl) {
+        body.insertBefore(g, afterEl);
+      } else {
+        body.appendChild(g);
+      }
+    } else {
+      if (afterEl) {
+        body.insertBefore(ghost, afterEl);
+      } else {
+        body.appendChild(ghost);
+      }
+    }
+  }
+
+  function onDragEnter(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+    // Remove empty state
+    const empty = e.currentTarget.querySelector('.empty-state');
+    if (empty) empty.style.display = 'none';
+  }
+
+  function onDragLeave(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
+      e.currentTarget.classList.remove('drag-over');
+      e.currentTarget.querySelectorAll('.ghost-card').forEach(el => el.remove());
+      // Restore empty state if needed
+      const colId = e.currentTarget.dataset.colId;
+      const col = boardData.columns.find(c => c.id === colId);
+      if (col && col.cards.length === 0) {
+        const empty = e.currentTarget.querySelector('.empty-state');
+        if (empty) empty.style.display = '';
+      }
+    }
+  }
+
+  function onDrop(e) {
+    e.preventDefault();
+    const targetColId = e.currentTarget.dataset.colId;
+    const cardId = e.dataTransfer.getData('text/plain');
+
+    // Find source column and card
+    let sourceColIdx = -1;
+    let cardIdx = -1;
+    let cardData = null;
+
+    for (let i = 0; i < boardData.columns.length; i++) {
+      const idx = boardData.columns[i].cards.findIndex(c => c.id === cardId);
+      if (idx !== -1) {
+        sourceColIdx = i;
+        cardIdx = idx;
+        cardData = boardData.columns[i].cards[idx];
+        break;
+      }
+    }
+
+    if (!cardData) return;
+
+    // Remove from source
+    boardData.columns[sourceColIdx].cards.splice(cardIdx, 1);
+
+    // Find target column
+    const targetCol = boardData.columns.find(c => c.id === targetColId);
+
+    // Determine insert position based on ghost
+    const body = e.currentTarget;
+    const ghost = body.querySelector('.ghost-card');
+    let insertIdx = targetCol.cards.length;
+
+    if (ghost) {
+      const cards = [...body.querySelectorAll('.card:not(.dragging)')];
+      const ghostIdx = [...body.children].indexOf(ghost);
+      let cardsBefore = 0;
+      for (let i = 0; i < ghostIdx; i++) {
+        if (body.children[i].classList && body.children[i].classList.contains('card') && !body.children[i].classList.contains('dragging')) {
+          cardsBefore++;
+        }
+      }
+      insertIdx = cardsBefore;
+    }
+
+    targetCol.cards.splice(insertIdx, 0, cardData);
+
+    render();
+  }
+
+  function getDragAfterElement(container, y) {
+    const cards = [...container.querySelectorAll('.card:not(.dragging)')];
+    return cards.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset, element: child };
+      }
+      return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  loadBoard();
+})();
+</script>
+</body>
+</html>

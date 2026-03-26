@@ -642,7 +642,11 @@ Every resource in ClawFish is evaluated using [Quorum](https://github.com/qinnov
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to submit resources.
+**Contribute to ClawFish, get immortalized as a persona.**
+
+Every contributor who submits a meaningful contribution gets a permanent AI persona created in their name within the ClawFish persona library. Your persona becomes part of the Quorum evaluation system — your digital identity lives on, reviewing and debating resources alongside other contributor personas.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for submission guidelines and [docs/PERSONAS.md](docs/PERSONAS.md) for the persona specification.
 
 ---
 

@@ -1,0 +1,90 @@
+{
+  "columns": [
+    {
+      "id": "backlog",
+      "title": "BACKLOG",
+      "cards": [
+        {
+          "id": "card-1",
+          "title": "Persona Library",
+          "priority": "P2",
+          "project": "ClawFish",
+          "description": "Curated archetypes for Quorum"
+        },
+        {
+          "id": "card-2",
+          "title": "Marketing Strategy Engine",
+          "priority": "P1",
+          "project": "ClawFish",
+          "description": "AI outreach targeting with probability scoring"
+        },
+        {
+          "id": "card-3",
+          "title": "21 Domain Sites",
+          "priority": "P1",
+          "project": "Sites",
+          "description": "Build GitHub Pages for all domains"
+        },
+        {
+          "id": "card-4",
+          "title": "SixDots v2",
+          "priority": "P1",
+          "project": "SixDots",
+          "description": "Next version of braille learning app"
+        },
+        {
+          "id": "card-5",
+          "title": "Spot v2",
+          "priority": "P1",
+          "project": "Spot",
+          "description": "Next version of spatial awareness app"
+        }
+      ]
+    },
+    {
+      "id": "in-progress",
+      "title": "IN PROGRESS",
+      "cards": [
+        {
+          "id": "card-6",
+          "title": "Krabby Patty Formula",
+          "priority": "P0",
+          "project": "ClawFish",
+          "description": "Citation ranking \u2014 verify AI research against real SEO/reputation signals"
+        },
+        {
+          "id": "card-7",
+          "title": "ClawFish Comic",
+          "priority": "P1",
+          "project": "Marketing",
+          "description": "Axle the ClawFish weekly comic series"
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "title": "REVIEW",
+      "cards": []
+    },
+    {
+      "id": "done",
+      "title": "DONE",
+      "cards": [
+        {
+          "id": "card-8",
+          "title": "Repo Design Kit",
+          "priority": "P2",
+          "project": "Tools",
+          "description": "Theme-as-code SVG headers"
+        },
+        {
+          "id": "card-9",
+          "title": "Developer Portfolio PR",
+          "priority": "P2",
+          "project": "Marketing",
+          "description": "Submitted to emmabostian/developer-portfolios"
+        }
+      ]
+    }
+  ]
+}
