@@ -83,6 +83,13 @@
           "priority": "P2",
           "project": "Marketing",
           "description": "Submitted to emmabostian/developer-portfolios"
+        },
+        {
+          "id": "card-10",
+          "title": "CONTRIBUTING.md + Persona Reward",
+          "priority": "P1",
+          "project": "ClawFish",
+          "description": "Contributor persona reward system documented in CONTRIBUTING.md and PERSONAS.md"
         }
       ]
     }

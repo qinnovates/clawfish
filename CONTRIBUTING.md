@@ -76,6 +76,19 @@ When adding to `data/resources.json`, use this structure:
 - **Incorrect information**: Open an issue or submit a PR with corrections
 - **Category suggestions**: Open an issue to discuss new categories
 
+## Contributor Persona Reward
+
+Every meaningful contribution earns you a permanent AI persona in the ClawFish persona library. Your digital identity lives on in the system, participating in Quorum evaluations alongside other contributor personas.
+
+| Contribution | Persona Tier |
+|-------------|-------------|
+| Bug fix / broken link report | **Minor** — name + bio |
+| New resource / feature | **Standard** — full persona (name, bio, traits, stance, topics) |
+| Major contribution (new category, tool, integration) | **Premium** — custom traits + Quorum voting weight |
+| Repeat contributor | Persona **evolves** with each contribution |
+
+See [docs/PERSONAS.md](docs/PERSONAS.md) for the full persona specification.
+
 ## Code of Conduct
 
 Be respectful, constructive, and professional in all interactions. We are building a resource for the entire SEO community.
