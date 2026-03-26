@@ -50,7 +50,7 @@
           "title": "Krabby Patty Formula",
           "priority": "P0",
           "project": "ClawFish",
-          "description": "Citation ranking \u2014 verify AI research against real SEO/reputation signals"
+          "description": "Citation ranking — verify AI research against real SEO/reputation signals"
         },
         {
           "id": "card-7",
@@ -58,6 +58,13 @@
           "priority": "P1",
           "project": "Marketing",
           "description": "Axle the ClawFish weekly comic series"
+        },
+        {
+          "id": "card-11",
+          "title": "Quorum Congress",
+          "priority": "P0",
+          "project": "Quorum",
+          "description": "Full org simulation: MECE research, Delphi lateral review, scribe, governing council, public voting, Sims-style persona traits with bell curve distribution"
         }
       ]
     },
