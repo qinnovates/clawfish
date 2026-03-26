@@ -65,6 +65,13 @@
           "priority": "P0",
           "project": "Quorum",
           "description": "Full org simulation: MECE research, Delphi lateral review, scribe, governing council, public voting, Sims-style persona traits with bell curve distribution"
+        },
+        {
+          "id": "card-12",
+          "title": "Agent Review Audit Trail",
+          "priority": "P1",
+          "project": "ClawFish",
+          "description": "Audit DB + UI showing which agent reviewed what, votes, comments, role/dept. GitHub PR integration for agent reviews."
         }
       ]
     },

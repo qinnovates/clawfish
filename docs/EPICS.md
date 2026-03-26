@@ -76,6 +76,108 @@ Curated persona roster for Quorum integration. Based on notable archetypes.
 
 ---
 
+## Epic 4: Agent Review Audit Trail
+
+**Status:** NOT STARTED
+**Priority:** P1 — Required for Congress to be trustworthy
+
+### What It Is
+
+A full audit trail system that logs every AI agent interaction and surfaces it visually in the UI and on GitHub like real human code reviewers.
+
+### Requirements
+
+**Database Layer:**
+- Every agent action logged: agent_id, persona_name, role, department, action (vote_up/vote_down/comment/review/flag), target (resource/document/stage), timestamp, reasoning
+- Schema supports version history — see how votes changed over time
+- Queryable: "show me everything VP Security reviewed" or "which resources had split votes"
+
+**UI Layer:**
+- Per-document/resource: show which agents reviewed it, their vote, their role/dept
+- Visual indicators: thumbs up/down with agent avatar/color, timestamp
+- Review count badge: "Reviewed 3x by 2 teams"
+- Expandable comment threads per agent
+- Filter by: team, persona, vote direction, time period
+
+**GitHub Integration:**
+- Agent reviews post as GitHub PR review comments (using GitHub API)
+- Threaded discussions on specific lines/sections
+- Agents show as real reviewers with their persona name
+- Version-controlled: every review round is a commit or PR comment thread
+
+**Agent Identity:**
+- Each agent has: id, persona_name, display_name, role, department (from org chart), avatar_color, Census Genome traits
+- Comments are signed: "— Dr. Sarah Chen, VP Security / Technical SEO Architect (Skepticism: 8/10)"
+
+### Architecture
+
+```
+Agent Action
+    ↓
+Action Logger (writes to audit DB)
+    ↓
+┌─────────────────────────────┐
+│ audit.db (SQLite)           │
+│ ├── reviews table           │
+│ ├── votes table             │
+│ ├── comments table          │
+│ └── agent_identities table  │
+└─────────────────────────────┘
+    ↓                    ↓
+UI Dashboard          GitHub API
+(visual audit trail)  (PR review comments)
+```
+
+### Database Schema
+
+```sql
+-- Agent identities
+CREATE TABLE agents (
+  id TEXT PRIMARY KEY,
+  persona_name TEXT NOT NULL,
+  role TEXT,
+  department TEXT,
+  avatar_color TEXT,
+  traits JSON,
+  created_at DATETIME
+);
+
+-- Reviews
+CREATE TABLE reviews (
+  id TEXT PRIMARY KEY,
+  agent_id TEXT REFERENCES agents(id),
+  target_type TEXT, -- 'resource' | 'document' | 'stage' | 'epic'
+  target_id TEXT,
+  action TEXT, -- 'approve' | 'request_changes' | 'comment' | 'flag'
+  vote INTEGER, -- -1, 0, +1
+  score REAL, -- 0-10 quality score
+  reasoning TEXT,
+  round_id TEXT,
+  github_comment_id TEXT, -- if synced to GitHub
+  created_at DATETIME
+);
+
+-- Comments (threaded)
+CREATE TABLE comments (
+  id TEXT PRIMARY KEY,
+  review_id TEXT REFERENCES reviews(id),
+  agent_id TEXT REFERENCES agents(id),
+  parent_comment_id TEXT REFERENCES comments(id),
+  body TEXT,
+  created_at DATETIME
+);
+```
+
+### What This Enables
+
+- "Show me why VP Security voted down this resource" → click → see reasoning + traits + department context
+- "Which stages had unanimous approval?" → filter → see green checkmarks across all agents
+- "What changed between Round 1 and Round 2?" → version diff of votes and comments
+- Kevin's own reviews show alongside AI agents — same system, same UI
+- GitHub PR shows full agent deliberation as review comments — looks like a real team reviewed it
+
+---
+
 ## PRIORITY EPIC: Quorum Congress
 
 **Status:** IN PROGRESS — DESIGNING
